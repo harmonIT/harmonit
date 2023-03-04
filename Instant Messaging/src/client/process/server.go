@@ -19,7 +19,6 @@ func ShowMenu(){
 	case 2:
 	case 3:
 	case 4:
-		fmt.Println("exited")
 		os.Exit(0)
 	default:
 		fmt.Println("enter error")

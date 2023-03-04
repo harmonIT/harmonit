@@ -7,6 +7,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net"
+	"time"
 )
 type UserProcess struct {
 
@@ -59,7 +60,10 @@ func (this *UserProcess) Login(userId int) (err error){
 		return
 	}
 	fmt.Printf("客户端发送消息长度ok,长度=%d,内容=%s",len(data),string(data))
-	//创建连接对象实例
+
+	time.Sleep(time.Second*5)//客户端发送完请求，等待服务端响应数据
+
+	//创建连接对象实例，拿的一直是一个连接
 	tf:=&utils.Transfer{
 		Conn: conn,
 	}
