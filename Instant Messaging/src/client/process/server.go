@@ -1,7 +1,9 @@
 package process
 
 import (
+	"client/utils"
 	"fmt"
+	"net"
 	"os"
 )
 
@@ -15,7 +17,6 @@ func ShowMenu(){
 	fmt.Scanf("%d\n",key)
 	switch key {
 	case 1:
-		fmt.Println()
 	case 2:
 	case 3:
 	case 4:
@@ -24,4 +25,20 @@ func ShowMenu(){
 		fmt.Println("enter error")
 	}
 
+}
+//keep in touch with server
+func serverProcessMes(conn net.Conn){
+	tf:=&utils.Transfer{
+		Conn: conn,
+	}
+	for{
+		fmt.Println("读取服务端发来的消息")
+		mes, err := tf.ReadPkg()
+		if err != nil {
+			fmt.Println("tf.ReadPkg() error",err)
+			return
+		}
+		fmt.Printf("mes=%v\n",mes)
+
+	}
 }

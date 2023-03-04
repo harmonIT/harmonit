@@ -80,6 +80,7 @@ func (this *UserProcess) Login(userId int) (err error){
 		return
 	}
 	if loginResMes.Code==200{
+		go serverProcessMes(conn)
 		fmt.Println("login success")
 		for{
 			ShowMenu()
