@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net"
+	"server/model"
 	"server/utils"
 )
 type UserProcess struct {
@@ -22,14 +23,30 @@ func (this *UserProcess) ServerProcessLogin(mes *message.Message) (err error){
 	var resMes message.Message
 	resMes.Type=message.LoginResponseType
 	var loginResMes message.LoginResponse
-	if loginMes.UserId==100{
+	user, err := model.MyUserDao.Login(loginMes.UserId, loginMes.UserPwd)
+	if err != nil {
+			if err == model.ERROR_USER_NOTEXISTS {
+				loginResMes.Code = 500
+				loginResMes.Error = err.Error()
+			} else if err == model.ERROR_USER_PWD  {
+				loginResMes.Code = 403
+				loginResMes.Error = err.Error()
+			} else {
+				loginResMes.Code = 505
+				loginResMes.Error = "服务器内部错误..."
+			}
+	}else {
+		loginResMes.Code=200
+		fmt.Println(user,"登录成功")
+	}
+	/*	if loginMes.UserId==100{
 		loginResMes.Code=200
 		fmt.Println("登录成功")
 	}else {
 		loginResMes.Code=500
 		loginResMes.Error="用户不存在，请注册"
 
-	}
+	}*/
 	//将loginResMes序列化
 	data, err := json.Marshal(&loginResMes)
 	if err != nil {

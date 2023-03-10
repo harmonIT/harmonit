@@ -22,8 +22,8 @@ func main() {
 			fmt.Println("Login in")
 			fmt.Println("Please enter id")
 			fmt.Scanf("%d\n",&userId)
-			//fmt.Println("Please enter password")
-			//fmt.Scanf("%s\n",&userPwd)
+			fmt.Println("Please enter password")
+			fmt.Scanf("%s\n",&userPwd)
 			up:=process.UserProcess{}
 			err := up.Login(userId)
 			//err := Login(userId, userPwd)
