@@ -23,7 +23,6 @@ func main() {
 		conn, err := listen.Accept()
 		if err != nil {
 			fmt.Println("listen.Accept error=",err)
-
 		}
 		go Process(conn)
 	}

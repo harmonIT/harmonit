@@ -1,6 +1,7 @@
 package model
 
 import (
+	"common/message"
 	"encoding/json"
 	"fmt"
 	"github.com/garyburd/redigo/redis"
@@ -51,6 +52,31 @@ func (this *UserDao) Login(userId int,userPwd string) (user *User,err error){
 	return
 }
 
+func (this *UserDao) Register(user *message.User) (err error){
+	conn := this.pool.Get()
+	defer conn.Close()
+	//调用redis的get，如果没有错，说明用户存在，不可注册
+	_, err = this.getUserById(conn, user.UserId)
+	if err == nil {
+		err=ERROR_USER_EXISTS
+		return
+	}
+	//此时说明用户不存在，可以注册
+	//序列化
+	data, err := json.Marshal(user)
+	if err != nil {
+		fmt.Println("json.Marshal(user) error=",err)
+		return
+	}
+	//存入redis中
+	_, err = conn.Do("HSet", "users", user.UserId, string(data))
+	if err != nil {
+		fmt.Println("conn.Do(\"HSet\", \"users\", user.UserId, string(data)) error=",err)
+		return
+
+	}
+	return
+}
 
 
 

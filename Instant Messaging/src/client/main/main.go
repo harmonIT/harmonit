@@ -7,6 +7,7 @@ import (
 )
 var userId int
 var userPwd string
+var userName string
 func main() {
 	var key int
 	//loop:=true
@@ -25,7 +26,7 @@ func main() {
 			fmt.Println("Please enter password")
 			fmt.Scanf("%s\n",&userPwd)
 			up:=process.UserProcess{}
-			err := up.Login(userId)
+			err := up.Login(userId,userPwd)
 			//err := Login(userId, userPwd)
 			if err != nil {
 				fmt.Println("Login failure")
@@ -36,6 +37,22 @@ func main() {
 		case 2:
 			fmt.Println("Sigh up")
 			//loop=false
+			fmt.Println("please enter id")
+			fmt.Scanf("%d\n",userId)
+			fmt.Println("please enter password")
+			fmt.Scanf("%s\n",userPwd)
+			fmt.Println("please enter name")
+			fmt.Scanf("%s\n",userName)
+			//创建一个注册结构体实例
+			up:=process.UserProcess{}
+			err := up.Register(userId, userPwd, userName)
+			if err != nil {
+				fmt.Println("up.Register(userId, userPwd, userName) error=",err)
+				return
+			}else {
+				fmt.Println("success")
+				return
+			}
 		case 3:
 			fmt.Println("Exit")
 			//loop=false

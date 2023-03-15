@@ -29,11 +29,19 @@ func (this *Processor) serverProcessMes(mes *message.Message) (err error){
 		}
 	case message.RegisterMessageType:
 		//处理注册
+		up:=&process.UserProcess{
+		Conn: this.Conn,
+		}
+		err = up.ServerProcessRegister(mes)
+		if err != nil {
+			fmt.Println("up.ServerProcessRegister(mes) error=",err)
+			return
+		}
 	default:
 		fmt.Println("无法识别用什么函数处理请求")
 
 	}
-	return err
+	return
 }
 func (this *Processor) process2() (err error){
 
