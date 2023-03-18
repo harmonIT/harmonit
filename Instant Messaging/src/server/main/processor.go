@@ -30,7 +30,7 @@ func (this *Processor) serverProcessMes(mes *message.Message) (err error){
 	case message.RegisterMessageType:
 		//处理注册
 		up:=&process.UserProcess{
-		Conn: this.Conn,
+			Conn: this.Conn,
 		}
 		err = up.ServerProcessRegister(mes)
 		if err != nil {

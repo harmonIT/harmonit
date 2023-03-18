@@ -38,13 +38,13 @@ func main() {
 			fmt.Println("Sigh up")
 			//loop=false
 			fmt.Println("please enter id")
-			fmt.Scanf("%d\n",userId)
+			fmt.Scanf("%d\n",&userId)
 			fmt.Println("please enter password")
-			fmt.Scanf("%s\n",userPwd)
+			fmt.Scanf("%s\n",&userPwd)
 			fmt.Println("please enter name")
-			fmt.Scanf("%s\n",userName)
+			fmt.Scanf("%s\n",&userName)
 			//创建一个注册结构体实例
-			up:=process.UserProcess{}
+			up:=&process.UserProcess{}
 			err := up.Register(userId, userPwd, userName)
 			if err != nil {
 				fmt.Println("up.Register(userId, userPwd, userName) error=",err)

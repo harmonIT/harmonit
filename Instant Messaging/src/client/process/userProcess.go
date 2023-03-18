@@ -79,6 +79,14 @@ func (this *UserProcess) Login(userId int,userPwd string) (err error){
 		return
 	}
 	if loginResMes.Code==200{
+		fmt.Println("当前在线用户列表如下")
+		for _,v:=range loginResMes.UserIds{
+			if v==userId{
+				continue
+			}
+			fmt.Println("用户id：\t",v)
+		}
+		fmt.Println()
 		go serverProcessMes(conn)
 		fmt.Println("login success")
 		for{
@@ -138,6 +146,7 @@ func (this *UserProcess) Register(userId int,userPwd,userName string) (err error
 	if registerResMes.Code==200{
 		fmt.Println("注册成功,请重新登录")
 		//os.Exit(0)
+
 	}else{
 		fmt.Println(registerResMes.Error)
 		//os.Exit(0)

@@ -18,7 +18,7 @@ func NewUserDao(pool *redis.Pool) (userDao *UserDao){
 	userDao=&UserDao{
 		pool: pool,
 	}
-	return userDao
+	return
 }
 func (this *UserDao) getUserById(conn redis.Conn,id int) (user *User,err error){
 	res,err:= redis.String(conn.Do("HGet","users",id))
@@ -34,7 +34,7 @@ func (this *UserDao) getUserById(conn redis.Conn,id int) (user *User,err error){
 		fmt.Println("json.Unmarshal([]byte(res), user) err=",err)
 		return
 	}
-	return nil, nil
+	return
 }
 func (this *UserDao) Login(userId int,userPwd string) (user *User,err error){
 	//从连接池取出一个连接

@@ -22,7 +22,7 @@ func (this *Transfer) ReadPkg() (mes message.Message,err error){
 	pkgLen = binary.BigEndian.Uint32(this.Buf[0:4])
 	n, err := this.Conn.Read(this.Buf[:pkgLen])
 	if n!= int(pkgLen) || err!=nil{
-		//fmt.Println("conn Read(buf[:pkgLen]) error=",err)
+		fmt.Println("conn Read(buf[:pkgLen]) error=",err)
 		return
 	}
 	if pkgLen==0{
@@ -36,7 +36,7 @@ func (this *Transfer) ReadPkg() (mes message.Message,err error){
 		return
 
 	}
-	return mes,err
+	return
 }
 
 
@@ -45,8 +45,8 @@ func (this *Transfer) WritePkg(data []byte) (err error){
 	var pkgLen uint32
 	pkgLen = uint32(len(data))
 	//var buf [4]byte
-	binary.BigEndian.PutUint32(this.Buf[:4],pkgLen)
-	n, err := this.Conn.Write(this.Buf[:4])
+	binary.BigEndian.PutUint32(this.Buf[0:4],pkgLen)
+	n, err := this.Conn.Write(this.Buf[0:4])
 	if n!=4||err != nil {
 		fmt.Println("writePkg conn.Write(buf[:4]) error=",err)
 		return
