@@ -2,6 +2,8 @@ package process
 
 import (
 	"client/utils"
+	"common/message"
+	"encoding/json"
 	"fmt"
 	"net"
 	"os"
@@ -17,6 +19,7 @@ func ShowMenu(){
 	fmt.Scanf("%d\n",key)
 	switch key {
 	case 1:
+		outputOnlineUser()
 	case 2:
 	case 3:
 	case 4:
@@ -38,7 +41,25 @@ func serverProcessMes(conn net.Conn){
 			fmt.Println("tf.ReadPkg() error",err)
 			return
 		}
+		switch mes.Type {
+		case message.NotifyUserStatusMesType:
+			var notifyUserStatusMes message.NotifyUserStatusMes
+			json.Unmarshal([]byte(mes.Data), &notifyUserStatusMes)
+			//把这个用户的信息，状态保存到客户map[int]User中
+			updateUserStatus(&notifyUserStatusMes)
+		default:
+			fmt.Println("未知消息类型")
+		}
 		fmt.Printf("mes=%v\n",mes)
 
 	}
 }
+
+
+
+
+
+
+
+
+
