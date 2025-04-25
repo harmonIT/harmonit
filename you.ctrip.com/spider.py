@@ -4,81 +4,56 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.webdriver import ActionChains
+import time
 url='https://you.ctrip.com/sight/nanjing9/19519.html?renderPlatform=#ctm_ref=www_hp_bs_lst'
 browser=webdriver.Chrome()
 browser.get(url=url)
-# page_source=browser.page_source
+browser.maximize_window()#页面不在可视范围内无法点击元素？？？？
 #浏览器等待并找到时间排序按钮
-sort_time=WebDriverWait(browser,5).until(EC.presence_of_element_located((By.XPATH,'//span[@class="sortTag"]')))
-ActionChains(browser).click(sort_time).perform()
-#等待按钮生效，否则服务器未返回数据就会执行下面程序
-sort_time = WebDriverWait(browser, 5).until(EC.text_to_be_present_in_element((By.XPATH, '//span[@class="sortTag current"]'), '时间排序'))
+try:
+    sort_time = WebDriverWait(browser, 10).until(EC.element_to_be_clickable((By.XPATH, '//span[@class="sortTag"]')))
+    sort_time.click()  # 直接使用 .click() 方法
+except :
+    print("元素未能在指定时间内点击")
+
+# 等待按钮生效
+try:
+    sort_time = WebDriverWait(browser, 10).until(EC.text_to_be_present_in_element((By.XPATH, '//span[@class="sortTag current"]'), '时间排序'))
+except :
+    print("排序按钮未能在指定时间内生效")
 commentDetails=[]
 commentTimes=[]
 averageScores=[]
 toolsItems=[]
-for i in range(2):
-    commentDetail=WebDriverWait(browser,5).until(EC.presence_of_all_elements_located((By.XPATH,'//div[@class="commentDetail"]')))#如果xpath‘//div[@class="commentDetail/text()’会选择到文本内容，而until方法需要传入element对象  
-    commentDetails.append(commentDetail)
-    # print(type(commentDetail.text),commentDetail.text)
-    commentTime=WebDriverWait(browser,5).until(EC.presence_of_all_elements_located((By.XPATH,'//div[@class="commentTime"]')))
-    # commentTimes.append(EC.presence_of_element_located((By.XPATH,'//div[@class="commentTime"]/text()')))
-    commentTimes.append(commentTime)
-    averageScore=WebDriverWait(browser,5).until(EC.presence_of_all_elements_located((By.XPATH,'//span[@class="averageScore"]')))
-    averageScores.append(averageScore)
-    # print(type(averageScore.text),averageScore.text)
-    toolsItem=WebDriverWait(browser,5).until(EC.presence_of_all_elements_located((By.XPATH,'//span[@class="toolsItem"]')))
-    toolsItems.append(toolsItem)
-    next_page=WebDriverWait(browser,5).until(EC.presence_of_element_located((By.XPATH,'//span[@class="ant-pagination-item-comment"]')))
+def get_ele_list(xpath,ele_list):  
+    eles=browser.find_elements(By.XPATH,xpath)
+    for ele in eles:
+        ele_list.append(ele.text)
+#循环到第三页会卡很久，并且会丢失几次循环，似乎内部循环完了？还是调用函数的问题？
+for i in range(1,30):
+    #等待点击后的页面加载完成??这个等待机制很鸡肋，不如直接sleep(1)
+    # WebDriverWait(browser,10).until(EC.text_to_be_present_in_element((By.XPATH,'//li[contains(@class, "ant-pagination-item-active")]/a'),str(i)))
+    time.sleep(2)
+    get_ele_list('//div[@class="commentTime"]',commentTimes)
+    get_ele_list('//div[@class="commentDetail"]',commentDetails)
+    get_ele_list('//span[@class="averageScore"]',averageScores)
+    get_ele_list('//span[@class="toolsItem"]',toolsItems)
+
+    next_page=browser.find_element(By.XPATH,'//li[@class=" ant-pagination-next"]')
     ActionChains(browser).click(next_page).perform()
-print('评论内容',commentDetails)
+# print('评论内容',commentDetails)
+# with open('xiecheng.txt','w',encoding='utf-8') as f:
+#     f.write(str(commentDetails))
+#     f.write(str(commentTimes))
+#     f.write(str(averageScores))
+#     f.write(str(toolsItems))
 with open('xiecheng.csv','w',newline='',encoding='utf-8') as f:
     writer=csv.writer(f)
-    writer.writerow(['contentDetail','commentTime','averageScore','toolsItem'])
+    writer.writerow(['评论内容','评论时间','平均评分','点赞数'])
     #按列写入数据
     for commentDetail, commentTime, averageScore, toolsItem in zip(commentDetails, commentTimes, averageScores, toolsItems):
         writer.writerow([commentDetail, commentTime, averageScore, toolsItem])
 
-browser.close()
+browser.quit()
 
-'''postUrl='https://m.ctrip.com/restapi/soa2/13444/json/getCommentCollapseList?_fxpcqlniredt=09031059411794059976&x-traceID=09031059411794059976-1745486764924-63354'
-headers = {
-    'Content-Type': 'application/json'
-}
-data={
-    "arg": {
-        "channelType": 2,
-        "collapseType": 0,
-        "commentTagId": 0,
-        "pageIndex": 1,
-        "pageSize": 10,
-        "poiId": 80549,
-        "sortType": 1,
-        "sourceType": 1,
-        "starType": 0,
-    },
-    "head": {
-        "cid": "09031059411794059976",
-        "ctok": "",
-        "cver": "1.0",
-        "lang": "01",
-        "sid": "8888",
-        "syscode": "09",
-        "auth": "",
-        "xsid":"",
-        "extension": []
-    }
-}
-data=json.dumps(data)
-
-html=requests.post(postUrl,data,headers=headers)
-print(html.status_code)
-html=html.text
-print(html)   
-html=json.loads(html)
-items=html['result']['items']
-for item in items:
-    print(item['content'])
-
-'''
 
