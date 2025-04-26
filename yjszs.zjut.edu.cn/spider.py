@@ -7,7 +7,7 @@ url='https://yjszs.zjut.edu.cn/gsapp/sys/dszszgxxykfwappzjut/modules/dszsxx/dszs
 data={
     'querySetting': json.dumps([{"name":"XKSZDWDM","caption":"所在院系","linkOpt":"AND","builderList":"cbl_m_List","builder":"m_value_equal","value":"008","value_display":"计算机科学与技术学院（软件学院）"},{"name":"_gotoFirstPage","value":True,"linkOpt":"AND","builder":"equal"}]),
     "pageSize": 100,
-    "pageNumber": 1
+    "pageNumber": 2
 }
 
 # data=json.dumps(data)
@@ -35,7 +35,7 @@ for i in urls:
         t_ext=resp.text
         parse=etree.HTML(t_ext)
         name=parse.xpath('//h1[@class="news_title"]/text()')
-        name=name[0]
+        name=str(name)
         with open("%s.html"%name, "w",encoding='utf-8') as f:
             f.write(t_ext)
 
