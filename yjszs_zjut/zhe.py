@@ -6,15 +6,10 @@ import time
 url='https://yjszs.zjut.edu.cn/gsapp/sys/dszszgxxykfwappzjut/*default/index.do#dszsxx'
 browser=webdriver.Chrome()
 browser.get(url=url)
-time.sleep(6)
 with open('p_ost.js', 'r', encoding='utf-8') as file:
     js_code = file.read()
-    j=browser.execute_script(js_code)
-    time.sleep(6)
-    print('j的输出：',j)
-    
-    logs = browser.get_log('browser')
-    print(logs)
+    jsonData=browser.execute_script(js_code)
+    print(jsonData)
     browser.quit()
 
 

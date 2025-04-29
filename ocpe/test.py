@@ -1,9 +1,9 @@
 import requests
 from lxml import etree
-# import csv
 import pandas
 import chardet
 import time
+import threading
 start=time.perf_counter()
 link=[]
 biaotiS=[]
@@ -13,7 +13,8 @@ urls=[
     'http://www.ocpe.com.cn/new/new1/',
     'http://www.ocpe.com.cn/new/new2/index_2.html',
 ]
-for j in urls:
+lock=threading.Lock()
+def th(j):
     headers={
         "cookie":"qkchtecookieinforecord=%2C183-4736%2C",
         "Host":"www.ocpe.com.cn",
@@ -38,15 +39,16 @@ for j in urls:
     zhaiyao=parse.xpath('//div[@class="xwt"]/div[@class="xwt_b"]/text()')
     riqi=parse.xpath('//div[@class="xwt"]/div[@class="xwt_c"]/text()')
     for a,b,c in zip(biaoti,zhaiyao,riqi):
-        biaotiS.append(a)
-        zhaiyaoS.append(b)
-        riqiS.append(c)
+        with lock:
+            biaotiS.append(a)
+            zhaiyaoS.append(b)
+            riqiS.append(c)
 
-# with open('新能资讯test.csv','w',encoding='utf-8') as f:
-#     writer=csv.writer(f)
-#     writer.writerow(['标题','链接','摘要','日期'])
-#     for a,b,c,d in zip(biaotiS,link,zhaiyaoS,riqiS):
-#         writer.writerow([a,b,c,d])
+th(urls[0])
+thread=threading.Thread(target=th,args=(urls[1],))#这里urls[1]后面需要加一个逗号，因为这个args属性需要接收一个元组，而不是列表元素
+thread.start()
+thread.join()
+
 data = {
     '标题': biaotiS,
     '链接': link,
@@ -54,7 +56,8 @@ data = {
     '日期': riqiS
 }
 df = pandas.DataFrame(data)
-
 df.to_csv('新能资讯pandas.csv', index=False, encoding='utf-8')
 end=time.perf_counter()
 print(end-start)
+
+#单独只开一个子线程，算上线程创建和销毁的资源消耗和时间，并不能提高多少运行性能的提升！
