@@ -3,7 +3,7 @@ from lxml import etree
 import time
 from concurrent.futures import ThreadPoolExecutor
 import threading
-#多线程和异步处理？
+
 start1 = time.perf_counter()
 ids=[]
 lock=threading.Lock()

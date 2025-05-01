@@ -1,7 +1,6 @@
 #scrapy库的使用
 #操作谷歌浏览器使用JavaScript时，如何让python接收数据包
 #将之前的代码用fitten code优化一下
-#数据类型改成用字典类型，方便多线程处理
 #使用多进程或者多线程启动selenium，处理会更快
 import asyncio
 import aiohttp
