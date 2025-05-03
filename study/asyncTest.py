@@ -1,7 +1,5 @@
-#scrapy库的使用
-#操作谷歌浏览器使用JavaScript时，如何让python接收数据包
 #将之前的代码用fitten code优化一下
-#使用多进程或者多线程启动selenium，处理会更快
+#直接用JavaScript的谷歌插件爬取内容，可以绕过前端的js处理和加密等等
 import asyncio
 import aiohttp
 from lxml import etree
