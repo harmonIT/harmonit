@@ -1,5 +1,9 @@
 #将之前的代码用fitten code优化一下
-#直接用JavaScript的谷歌插件爬取内容，可以绕过前端的js处理和加密等等
+#用JavaScript写谷歌插件
+#学习scapy，检测除了浏览器外的流量并解析
+#学习数据可视化，词云，柱状图
+#学习使用AI大模型，AI智能识别验证码
+
 import asyncio
 import aiohttp
 from lxml import etree

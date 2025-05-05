@@ -101,5 +101,8 @@ if response.headers.get('Content-Encoding') == 'br':
     print(response_data.decode('utf-8'))
 else:
     print(response.text[:1000])'''
-
+'''# 假设 compressed_data 是一个字节流
+dctx = zstd.ZstdDecompressor()
+reader = dctx.stream_reader(response.content)
+data = reader.read()'''
 
