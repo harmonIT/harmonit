@@ -37,8 +37,8 @@ def spLink(i):
     with lock:
         links.extend(link)
 with ThreadPoolExecutor(max_workers=2) as executor:  # max_workers可以根据需要调整
-    results = executor.map(spLink, range(1, 21))#64
-print(links)
+    results = executor.map(spLink, range(1, 11))#64
+# print(links)
 
 companyName_list = []
 people_list = []
@@ -145,7 +145,7 @@ def spider(i):
         zhucidizhi_list.extend(zhucidizhi)
         name_list.extend(name)
     time.sleep(1)
-with ThreadPoolExecutor(max_workers=8) as executor:  # max_workers可以根据需要调整
+with ThreadPoolExecutor(max_workers=5) as executor:  # max_workers可以根据需要调整
     results = executor.map(spider, links)#64
 # 打印每个列表及其长度
 print(f"companyName: {companyName_list}, Length: {len(companyName_list)}")
