@@ -50,15 +50,15 @@ def mysql_():
     )
     mycursor = mydb.cursor()
     # 创建表
-    create_table_sql = """
-    CREATE TABLE IF NOT EXISTS top250_movies (
-        id INT AUTO_INCREMENT PRIMARY KEY,
-        title VARCHAR(255),
-        comment VARCHAR(250),
-        image_url VARCHAR(255)
-    )
-    """
-    mycursor.execute(create_table_sql)
+    # create_table_sql = """
+    # CREATE TABLE IF NOT EXISTS top250_movies (
+    #     id INT AUTO_INCREMENT PRIMARY KEY,
+    #     title VARCHAR(255),
+    #     comment VARCHAR(250),
+    #     image_url VARCHAR(255)
+    # )
+    # """
+    # mycursor.execute(create_table_sql)
 
     # 构建插入数据的SQL语句
     insert_sql = """

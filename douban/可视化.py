@@ -8,7 +8,7 @@ file_path = '清洗后的数据.xlsx'
 df = pd.read_excel(file_path).head(20)
 
 x = df.iloc[:, 0][::-1]  
-y = df.iloc[:, 1][::-1] 
+y = df.iloc[:, 1][::-1]     
 plt.figure(figsize=(15, 8))  
 plt.plot(x, y, marker='o', linestyle='-', color='b')
 

@@ -14,3 +14,12 @@ r.rpush("my_key", *my_list2)
 retrieved_list = r.lrange("my_key", 0, -1)  # 获取全部元素
 print(type(retrieved_list),[item.decode('utf-8') for item in retrieved_list])#redis里面存储以字节的形式，用utf-8解码读取主持字符串
 #windows命令chcp 65001更改编码为utf-8
+#value = r.get("my_string_key").decode('utf-8') 解码
+
+
+#cmd连接redis-cli --raw
+#查看所有键keys *
+#存储字符串内容 r.set('key',string)
+#获取字符串内容：get key
+#获取列表内容：lrange key 0 -1
+#删除键 del key
